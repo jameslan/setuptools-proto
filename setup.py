@@ -8,9 +8,8 @@ def main():
         description='setuptools plugin to generate python file from protobuf',
         long_description=open('README.md').read(),
         url='https://github.com/jameslan/setuptools-proto',
-        python_requires='>=3.7',
-        package_dir={'': 'src'},
-        packages=['setuptools_proto'],
+        py_modules=['setuptools_proto'],
+        install_requires=['setuptools-cmd-deps'],
     )
 
 

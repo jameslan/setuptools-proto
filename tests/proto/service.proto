@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package echo;
+import "echo.proto";
+
+service Echo {
+    rpc Echo(EchoRequest) returns (EchoResponse);
+    rpc EchoStream(EchoRequest) returns (stream EchoStreamResponse);
+}

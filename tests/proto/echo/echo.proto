@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package echo;
+
+message EchoRequest {
+    string value = 1;
+    // Number of extra times to echo
+    uint32 extra_times = 2;
+}
+
+message EchoResponse {
+    repeated string values = 1;
+}
+
+message EchoStreamResponse {
+    string value = 1;
+}

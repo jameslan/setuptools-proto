@@ -6,9 +6,18 @@ verify_ssl = true
 [dev-packages]
 flake8 = "*"
 pytest = "*"
+flake8-commas = "*"
+pep8-naming = "*"
+pytest-cov = "*"
 
 [packages]
 setuptools-cmd-deps = "*"
+# required by betterproto[compiler], but black doesn't have a stable release
+# have to explicit specify the pre-release version
+black = "==19.10b0"
 
 [requires]
 python_version = "3.6"
+
+[packages.betterproto]
+extras = [ "compiler",]

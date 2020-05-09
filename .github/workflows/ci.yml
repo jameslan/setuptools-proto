@@ -1,0 +1,40 @@
+name: Continuous Integration
+on:
+  - push
+  - pull_request
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+        python-version:
+          - 3.6
+          - 3.7
+          - 3.8
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: install protoc
+        if: startsWith(matrix.os, 'windows')
+        run: choco install protoc
+      - name: install protoc
+        if: startsWith(matrix.os, 'ubuntu')
+        run: sudo apt-get install protobuf-compiler
+      - name: pypi dep
+        run: |
+          pip install -U pipenv setuptools
+          pipenv install --dev --python $(python -c "import sys; print(sys.executable)") --skip-lock
+      - name: test
+        run: |
+          pipenv run flake8
+          pipenv run python setup.py develop
+          pipenv run python -m pytest
+      - name: packaging
+        run: pipenv run python setup.py sdist bdist_wheel

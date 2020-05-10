@@ -125,7 +125,7 @@ class TestSetupKeywordHandler:
         proto_modules(dist, 'wrong_keyword', [])
 
         assert not hasattr(dist, 'wrong_keyword')
-        assert dist.proto_modules is None
+        assert getattr(dist, 'proto_modules') is None
 
     def test_invalid_module(self, dist):
         with pytest.raises(AssertionError) as excinfo:

@@ -1,4 +1,5 @@
-from subprocess import check_output
+from subprocess import check_output, check_call
+import pytest
 
 
 setup_code = """
@@ -13,6 +14,13 @@ setup(proto_modules=ProtoModule(
     cwd='tests',
 ))
 """
+
+
+@pytest.fixture(scope='module', autouse=True)
+def build_proto():
+    check_call(['python', 'setup.py', 'develop'])
+    yield
+    check_call(['pip', 'uninstall', '-y', 'setuptools-proto'])
 
 
 def test_build_proto():

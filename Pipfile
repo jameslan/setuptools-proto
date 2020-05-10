@@ -21,3 +21,7 @@ python_version = "3.6"
 
 [packages.betterproto]
 extras = [ "compiler",]
+
+[scripts]
+unit = "python -m pytest tests/unit"
+test = "python -m pytest"

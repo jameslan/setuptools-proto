@@ -9,6 +9,7 @@ from glob import glob
 
 class ProtoBuild(Command):
     user_options = [('protoc', None, 'path of compiler protoc')]
+    description = 'build .proto files using betterproto plugin'
 
     def initialize_options(self):
         self.protoc = os.environ.get('PROTOC') or spawn.find_executable('protoc')
@@ -17,7 +18,7 @@ class ProtoBuild(Command):
         assert os.path.exists(self.protoc), f'Protobuf compiler {self.protoc} does not exist.'
 
     def run(self):
-        assert self.distribution.proto_modules is not None, \
+        assert getattr(self.distribution, 'proto_modules') is not None, \
             'Need to define proto_modules to run build_proto command'
 
         for module in self.distribution.proto_modules:

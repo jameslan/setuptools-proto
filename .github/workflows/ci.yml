@@ -36,4 +36,6 @@ jobs:
           pipenv run flake8
           pipenv run test
       - name: packaging
-        run: pipenv run python setup.py sdist bdist_wheel
+        run: |
+          pipenv run python setup.py sdist
+          pipenv run python setup.py bdist_wheel

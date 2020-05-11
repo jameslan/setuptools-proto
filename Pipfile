@@ -9,6 +9,7 @@ pytest = "*"
 flake8-commas = "*"
 pep8-naming = "*"
 pytest-cov = "*"
+setuptools-scm = "*"
 
 [packages]
 setuptools-cmd-deps = "*"

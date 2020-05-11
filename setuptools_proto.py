@@ -50,7 +50,8 @@ class ProtoModule:
             include_dirs: Optional[List[str]] = None,
     ):
         """
-        Protobuf module: A collection of .proto source file names, as well as compilation flags
+        Protobuf module: A collection of .proto source file names, as well as compilation flags.
+
 
         :param sources: [string]
           List of source file name patterns. Recursive wildcard (**) is supported.
@@ -58,6 +59,8 @@ class ProtoModule:
           Directory where protoc to put output python files.
         :param cwd: string
           Working directory for the protoc compiler, set to current working directory if omitted.
+          Note that select appropriate cwd could shorten the command line to invoke protoc,
+          especially there are many .proto files and very long paths
         :param include_dirs: [string]
           The include directories for protoc. `cwd` will be added by default.
         """

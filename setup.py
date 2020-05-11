@@ -4,7 +4,7 @@ from setuptools import setup
 def main():
     setup(
         name='setuptools-proto',
-        version='0.0.1',
+        use_scm_version=True,
         description='setuptools plugin to generate python file from protobuf',
         long_description=open('README.md').read(),
         url='https://github.com/jameslan/setuptools-proto',

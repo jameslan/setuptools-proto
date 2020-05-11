@@ -18,10 +18,12 @@ class ProtoBuild(Command):
         assert os.path.exists(self.protoc), f'Protobuf compiler {self.protoc} does not exist.'
 
     def run(self):
-        assert getattr(self.distribution, 'proto_modules') is not None, \
-            'Need to define proto_modules to run build_proto command'
+        modules = getattr(self.distribution, 'proto_modules', None) or []
 
-        for module in self.distribution.proto_modules:
+        if not modules:
+            print('Warning: No proto_modules defined')
+
+        for module in modules:
             cmd = [
                 self.protoc,
                 f'--python_betterproto_out={os.path.relpath(module.out_dir, module.cwd)}',

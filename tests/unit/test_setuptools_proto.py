@@ -57,14 +57,13 @@ class TestProtoBuild:
         build.finalize_options()
         assert os.path.isfile(build.protoc)  # able to find a protoc compiler
 
-    def test_module_missing(self, dist):
+    def test_module_missing(self, dist, capsys):
         build = ProtoBuild(dist)
-        with pytest.raises(AssertionError) as excinfo:
-            build.run()
+        build.run()
+        captured = capsys.readouterr()
+        assert 'Warning: No proto_modules defined' in captured.out
 
-        assert str(excinfo.value) == 'Need to define proto_modules to run build_proto command'
-
-    def test_build(self, dist):
+    def test_build(self, dist, capsys):
         with patch('subprocess.check_call') as check_call, \
                 patch('distutils.spawn.find_executable') as find_executable:
             find_executable.return_value = 'mock_protoc'
@@ -77,10 +76,12 @@ class TestProtoBuild:
                      'mock_protoc',
                      '--python_betterproto_out=.',
                      '-I.',
-                     'proto/echo/echo.proto',
+                     os.path.join('proto', 'echo', 'echo.proto'),
                  ],),
                 {'cwd': 'tests'},
             )
+            captured = capsys.readouterr()
+            assert 'Warning' not in captured.out
 
     def test_multiple_module(self, dist):
         with patch('subprocess.check_call') as check_call, \
@@ -103,7 +104,7 @@ class TestProtoBuild:
                         'mock_protoc',
                         '--python_betterproto_out=.',
                         '-I.',
-                        'echo/echo.proto',
+                        os.path.join('echo', 'echo.proto'),
                      ],),
                     {'cwd': 'tests/proto'},
                 ), (
@@ -111,9 +112,9 @@ class TestProtoBuild:
                         'mock_protoc',
                         '--python_betterproto_out=proto',
                         '-I.',
-                        '-Iproto/echo',
-                        'proto/service.proto',
-                        'proto/echo/echo.proto',
+                        f'-I{os.path.join("proto", "echo")}',
+                        os.path.join('proto', 'service.proto'),
+                        os.path.join('proto', 'echo', 'echo.proto'),
                      ],),
                     {'cwd': 'tests'},
                 ),
@@ -125,7 +126,7 @@ class TestSetupKeywordHandler:
         proto_modules(dist, 'wrong_keyword', [])
 
         assert not hasattr(dist, 'wrong_keyword')
-        assert getattr(dist, 'proto_modules') is None
+        assert getattr(dist, 'proto_modules', None) is None
 
     def test_invalid_module(self, dist):
         with pytest.raises(AssertionError) as excinfo:

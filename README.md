@@ -19,7 +19,7 @@ $ pip install setuptools-proto
 
 * Option 2, require `setuptools-proto` in `setup_requires` keyword of `setuptools`.
 
-So, add it either
+So, add it either in `setup.py` in a imperative fashion,
 
 ```python
 setuptools.setup(
@@ -27,7 +27,7 @@ setuptools.setup(
 )
 ```
 
-in `setup.py` in a imperative fashion or
+or in `seutp.cfg` in a declarative manner.
 
 ```ini
 [options]
@@ -35,14 +35,12 @@ setup_requires =
     setuptools-proto
 ```
 
-in `seutp.cfg` in a declarative manner.
-
 ## Configuration
 
 ### Protobuf modules
 
 To let `setuptools-proto` know what to compile,
-define `prot_modules` as a `ProtoModule` list.
+define `proto_modules` as a `ProtoModule` list.
 
 ```python
 from setuptools import setup
@@ -80,5 +78,5 @@ $ python setup.py --protoc /path/to/protoc build_proto
 
 ## Execute
 
-An extra command `build_proto` is added, to compile `.proto` to python code.
-This command will be automatically run before command `build_py`.
+An extra setuptools command `build_proto` is added, to compile `.proto` to python code.
+This command will be automatically run before setuptools command `build_py`.
